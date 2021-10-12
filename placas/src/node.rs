@@ -1,6 +1,10 @@
 use std::mem;
 use std::rc::Rc;
 
+use rand::distributions::Standard;
+use smartcore::math::distance::manhattan::Manhattan;
+use smartcore::math::distance::Distance;
+
 #[derive(Debug, PartialEq, Hash, Eq)]
 pub struct State {
     pub blank_index: isize,
@@ -8,6 +12,22 @@ pub struct State {
 }
 
 impl State {
+    /// Returns the complement of the manhattan distance in machine dependent word between
+    /// the actual state and the desire state
+    pub fn h_manhattan_inv(&self, desire: &State) -> usize {
+        let v1 = Vec::from(self.board)
+            .into_iter()
+            .map(|e| e as f64)
+            .collect();
+        let v2 = Vec::from(desire.board)
+            .into_iter()
+            .map(|e| e as f64)
+            .collect();
+        let l1 = Manhattan {}.distance(&v1, &v2);
+        usize::MAX - (l1 as usize)
+    }
+
+    /// Returns the number of plates in the right position
     pub fn h_right_pos(&self, desire: &State) -> usize {
         let mut count = 0;
         for (i, _) in self.board.iter().enumerate() {

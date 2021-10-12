@@ -70,7 +70,7 @@ fn main() {
 
     for _ in 0..10 {
         let t0 = std::time::Instant::now();
-        let node = StateWrapper::greedy_search(state3, desire).unwrap();
-        println!("greedy_search, state3, {}", t0.elapsed().as_micros());
+        let node = StateWrapper::greedy_search(state1, desire).unwrap();
+        println!("h_right_pos, state1, {}", t0.elapsed().as_micros());
     }
 }
